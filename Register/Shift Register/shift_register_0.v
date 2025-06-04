@@ -25,5 +25,11 @@ module shift_register_0 (
     end
 
   assign SO = shreg[WIDTH-1];
+  //For rightward shift i.e. MSB to LSB, each bit shifts from right to left
+ // else if (clken) begin
+   // shreg <= {SI, shreg[WIDTH-1:1]};
+  //end
+  //end
+  //assign SO = shreg[0];
 endmodule
 
