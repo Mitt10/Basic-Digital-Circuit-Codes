@@ -19,12 +19,17 @@ module shift_register_1 (
       shreg <= 0;
     end
   else if (clken) begin
-    for (i =0 ; i< WIDTH-1; i = i+1)
-      shreg[i+1] <= shreg[i];
-  
-  shreg[0] <= SI;
+    //For leftward shift (LSB -> MSB) => each bit shifts from left to right
+    for (i = 0; i < WIDTH-1; i = i + 1) 
+        shreg[i+1] <= shreg[i];  // LSB gets copied up
+    shreg[0] <= SI;              // SI enters at bit 0 (LSB)
   end
-  end   
-
+  end 
   assign SO = shreg[WIDTH-1];
+  //For rightward shift (MSB -> LSB)=> each bit shifts from right to left
+  //for (i = WIDTH-1 ; i>0; i = i-1)
+      //shreg[i-1] <= shreg[i];
+  //shreg[WIDTH-1] <= SI;
+  //assign SO = shreg[0];
+  
 endmodule
