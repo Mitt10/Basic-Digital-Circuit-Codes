@@ -22,6 +22,8 @@ begin
 		data <= 0;
 	else if (clken)
 		data <= {data[DATAWIDTH-2:0], SI};
+	//For rightward shift(MSB to LSB) i.e. each bit shifts from right to left
+	//data <= {SI, data[DATAWIDTH-1:1]};
 end
 
 endmodule
