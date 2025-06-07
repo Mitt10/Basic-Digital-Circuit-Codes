@@ -54,13 +54,13 @@ module tb_unsigned_mult_generate;
         B = 0;
         #12 rst = 0;
 
-        assign_checked_input(10, 50);   //Safe
+        assign_checked_input(10, 50);  //Safe
         #10;
 
-        assign_checked_input(7, 200);   // Safe
+        assign_checked_input(7, 200);  // Safe
         #10;
 
-        assign_checked_input(15, 255);  //Safe
+        assign_checked_input(15, 255); //Safe
         #10;
 
         // Uncomment to test overflow case
