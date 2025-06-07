@@ -48,30 +48,28 @@ module tb_unsigned_mult_generate;
         end
     endtask
 
-    // === Stimulus ===
     initial begin
         rst = 1;
         A = 0;
         B = 0;
         #12 rst = 0;
 
-        assign_checked_input(10, 50);   // ✅ Safe
+        assign_checked_input(10, 50);   //Safe
         #10;
 
-        assign_checked_input(7, 200);   // ✅ Safe
+        assign_checked_input(7, 200);   // Safe
         #10;
 
-        assign_checked_input(15, 255);  // ✅ Safe
+        assign_checked_input(15, 255);  //Safe
         #10;
 
         // Uncomment to test overflow case
-        // assign_checked_input(20, 256);  // ❌ Should fail if WIDTHA=4 or WIDTHB=8
+        // assign_checked_input(20, 256);  //Should fail if WIDTHA=4 or WIDTHB=8
 
         #100;
         $finish;
     end
 
-    // === VCD Dump (Optional) ===
     initial begin
         $dumpfile("tb_unsigned_mult_generate.vcd");
         $dumpvars(0, tb_unsigned_mult_generate);
