@@ -26,5 +26,25 @@ module mux_2x1(
     );
     
 assign y = sel ? i1:i0;
+//using if statement
+//reg y;
+//always @ (sel or i0 or i1)
+    //begin:
+      //  if (sel == 1'b0)
+        //    y = i0
+      //  else
+        //    y = i1
+    //end
+            
+//using case statement
+//reg y;
+    //always @(sel or i0 or i1)
+        //begin:
+          //  case (sel)
+            //    1'b0: y=i0;
+              //  1'b1: y=i1;
+            //endcase
+       // end
+        
 
 endmodule
