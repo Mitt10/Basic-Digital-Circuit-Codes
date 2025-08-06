@@ -59,7 +59,7 @@ always @(posedge clk) begin
 end
 
 assign full = (count == DEPTH);
-assign empty = (count ==0);
+assign empty = (count ==0); 
 
     
 endmodule
