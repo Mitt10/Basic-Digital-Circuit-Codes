@@ -1,6 +1,9 @@
+`timescale 1ns/1ps
+
 module tb_sync_fifo_2 ();
     parameter DATA_WIDTH=8;
-    parameter DEPTH = 8;
+    parameter DEPTH = 16;
+    parameter ADDR_WIDTH = 4;  // log2(DEPTH) calculated manually
     
     reg clk,rst;
     reg w_en,r_en;
@@ -8,10 +11,13 @@ module tb_sync_fifo_2 ();
     wire [DATA_WIDTH-1:0] data_out;
     wire full,empty;
 
-    reg [7:0] rand_data;
     reg [31:0] delay_val;
 
-     synchronous_fifo_2 UUT (
+    synchronous_fifo_2  #(
+    .DATA_WIDTH(DATA_WIDTH),
+    .DEPTH(DEPTH),
+    .ADDR_WIDTH(ADDR_WIDTH)
+    ) UUT (
     .clk(clk),
     .rst(rst),
     .w_en(w_en),
@@ -28,7 +34,6 @@ module tb_sync_fifo_2 ();
     clk=1;rst=0;
     w_en=0; r_en=0;
     data_in=0;
-    rand_data=0;
     delay_val=0;
     #3 rst=1;
     delay_val=20;
@@ -41,13 +46,12 @@ module tb_sync_fifo_2 ();
   task push;
     begin
         if (!full) begin
-            rand_data = $random % 256;
-            data_in = rand_data;
+            data_in= $random % 256; 
             w_en = 1;
             #1;
-            $display("Push In: w_en=%b, r_en=%b, data_in=%h", w_en,r_en,data_in);
+            $display("Push In: w_en=%b, r_en=%b, data_in=%h, at time=%t", w_en,r_en,data_in, $time);
         end else begin
-            $display("FIFO Full!! Cannot push data_in=%h",data_in);
+            $display("FIFO Full!! Cannot push data_in=%h, at time=%t",data_in, $time);
         end
     end
     
@@ -58,18 +62,16 @@ module tb_sync_fifo_2 ();
         if (!empty) begin
             r_en= 1;
             #1;
-            $display ("Pop Out: w_en=%b, r_en=%b, data_out=%h", w_en,r_en,data_out);
+            $display ("Pop Out: w_en=%b, r_en=%b, data_out=%h at time=%t", w_en,r_en,data_out,$time);
         end else begin
-            $display("FIFO Empty!! Cannot pop data");
+            $display("FIFO Empty!! Cannot pop data at time=%t",$time);
         end
     end
   endtask
 
   task drive;
     integer i;
-    reg[31:0] local_delay;
     begin
-        local_delay = delay_val;
         w_en=0;
         r_en=0;
         fork
@@ -81,7 +83,7 @@ module tb_sync_fifo_2 ();
                 w_en = 0;
             end
             begin
-                #(local_delay);
+                #(delay_val);
                 for ( i=0; i<10;i=i+1) begin
                     @(posedge clk);
                     pop;

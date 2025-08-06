@@ -14,7 +14,7 @@ module synchronous_fifo_2 #(
 
 reg [ADDR_WIDTH:0] w_ptr,r_ptr; //additional but in write & read pointers to check full & empty conditions
 reg [DATA_WIDTH-1:0] fifo [DEPTH:0];
-reg wrap_around;
+
 
 //Set Dfault values on reset
 always @(posedge clk)
@@ -43,6 +43,13 @@ always @(posedge clk) begin
     end
 end
 
-assign full = ({~w_ptr[3],w_ptr[2:0]} == r_ptr[3:0]);
-assign empty = (w_ptr[3:0] == r_ptr[3:0]);
+//assign full = ({~w_ptr[3],w_ptr[2:0]} == r_ptr[3:0]);
+//assign empty = (w_ptr[3:0] == r_ptr[3:0]);
+
+//Another way of implementing full & empty logic
+wire wrap_around;
+assign wrap_around = w_ptr[ADDR_WIDTH] ^ r_ptr[ADDR_WIDTH];
+assign full = wrap_around & (w_ptr[ADDR_WIDTH-1:0] ^ r_ptr[ADDR_WIDTH-1:0]);
+assign empty = (w_ptr == r_ptr);
+
 endmodule
