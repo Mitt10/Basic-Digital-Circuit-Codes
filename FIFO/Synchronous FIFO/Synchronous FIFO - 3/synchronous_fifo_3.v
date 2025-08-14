@@ -10,10 +10,10 @@
 `timescale 1ns/1ps
 
 module synchronous_fifo_3 #(
-    parameter DEPTH = 8;
-    parameter DATA_WIDTH = 8;
-    parameter ADDR_WIDTH = 3;
-)(
+    parameter DEPTH = 8,
+    parameter DATA_WIDTH = 8,
+    parameter ADDR_WIDTH = 3
+) (
     input clk,rst,
     input w_en,r_en,
     input [DATA_WIDTH-1:0] data_in,
