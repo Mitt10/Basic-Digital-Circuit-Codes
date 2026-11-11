@@ -10,9 +10,11 @@ module clock_divider #(parameter N=4) (
       initial $fatal (1, "N must be equal >= 1");
       assign clk_out = 1'b0;
     end 
+	  //When N = 1
     else if (N==1) begin
     	assign clk_out = clk_in;
     end
+	  //Even Division Factor
     else if (N%2 == 0) begin
     	localparam HALF = N/2;
       localparam W = (HALF > 1) ? $clog2(HALF) : 1;
